@@ -25,7 +25,7 @@ public class Display implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
 //        imageFactory = new RasterUniformImageFactory(200, 200, Color.RED, RasterImageType.BRUTE);
-        imageFactory = new RasterFlagFactory(900, 600, Color.BLUE, Color.WHITE, Color.RED, RasterImageType.BRUTE);
+        imageFactory = new RasterFlagFactory(900, 600, Color.BLUE, Color.WHITE, Color.RED, RasterImageType.SPARSE);
 
         // TODO : rajouter la création d'une fabrique d'image pour initialiser imageFactory
 
