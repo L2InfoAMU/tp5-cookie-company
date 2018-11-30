@@ -9,7 +9,7 @@ public class BruteRasterImage extends RasterImage<Color> {
 
         createRepresentation();
 
-        fill(color);
+        setPixelsColor(color);
     }
 
     public BruteRasterImage(Color[][] colors) {

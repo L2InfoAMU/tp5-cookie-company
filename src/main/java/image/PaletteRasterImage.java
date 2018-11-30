@@ -16,7 +16,7 @@ public class PaletteRasterImage extends RasterImage<Byte> {
         byteToColor.put((byte)0, color);
         colorToByte.put(color, (byte)0);
 
-        fill((byte)0);
+        setPixelsColor((byte)0);
     }
 
     public PaletteRasterImage(Color[][] colors) {

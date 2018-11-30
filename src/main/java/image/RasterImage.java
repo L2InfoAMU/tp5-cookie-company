@@ -88,7 +88,7 @@ public abstract class RasterImage<T> implements Image {
         Matrices.requiresRectangularMatrix(colors);
     }
 
-    protected void fill(T color) {
+    protected void setPixelsColor(T color) {
         for(T[] lines : pixelColors)
             Arrays.fill(lines, color);
     }
