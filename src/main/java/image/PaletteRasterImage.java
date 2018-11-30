@@ -33,7 +33,6 @@ public class PaletteRasterImage extends RasterImage<Byte> {
 
     @Override
     public void setPixelColor(Color color, int x, int y){
-        checkPixelBound(x, y);
         if(colorToByte.containsKey(color)){
             setRawPixelColor(colorToByte.get(color), x, y);
         }

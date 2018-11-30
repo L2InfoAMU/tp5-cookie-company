@@ -4,10 +4,8 @@ import javafx.scene.paint.Color;
 
 import java.util.List;
 
-public class VectorImage implements Image {
+public class VectorImage extends AbstractDimensionImage {
     private List<Shape> shapes;
-    private int width;
-    private int height;
 
     public final static Color backgroundColor = Color.WHITE;
 
@@ -18,6 +16,7 @@ public class VectorImage implements Image {
     }
 
     private Color getPixelColor(Point point) {
+        checkPixelBound(point.x, point.y);
         for(Shape shape : shapes)
             if(shape.contains(point))
                 return shape.getColor();
@@ -26,23 +25,5 @@ public class VectorImage implements Image {
     @Override
     public Color getPixelColor(int x, int y) {
         return getPixelColor(new Point(x, y));
-    }
-
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 }

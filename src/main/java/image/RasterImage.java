@@ -5,9 +5,7 @@ import util.Matrices;
 
 import java.util.Arrays;
 
-public abstract class RasterImage<T> implements Image {
-    protected int width;
-    protected int height;
+public abstract class RasterImage<T> extends AbstractDimensionImage {
     protected T[][] pixelColors;
 
 
@@ -18,11 +16,18 @@ public abstract class RasterImage<T> implements Image {
         pixelColors = (T[][]) new Object[height][width];
     }
 
+    protected void checkPictureBound(Color[][] colors) {
+        Matrices.requiresNonNull(colors);
+        Matrices.requiresNonZeroDimensions(colors);
+        Matrices.requiresRectangularMatrix(colors);
+    }
+
     protected void setRawPixelColors(T[][] pixelColors) {
         this.pixelColors = pixelColors;
     }
 
     protected void setRawPixelColor(T color, int x, int y) {
+        checkPixelBound(x, y);
         pixelColors[y][x] = color;
     }
 
@@ -47,16 +52,6 @@ public abstract class RasterImage<T> implements Image {
         }
     }
 
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
-    }
-
     protected void applyResize() {
         pixelColors = Arrays.copyOf(pixelColors, height);
 
@@ -66,26 +61,6 @@ public abstract class RasterImage<T> implements Image {
             else
                 pixelColors[i] = Arrays.copyOf(pixelColors[i], this.width);
         }
-    }
-
-    protected void setWidth(int width) {
-        this.width = width;
-
-    }
-
-    protected void setHeight(int height) {
-        this.height = height;
-    }
-
-    protected void checkPixelBound(int x, int y) {
-        if(x >= width || y >= height || x < 0 || y < 0)
-            throw new ArrayIndexOutOfBoundsException("pixel not inside picture");
-    }
-
-    protected void checkPictureBound(Color[][] colors) {
-        Matrices.requiresNonNull(colors);
-        Matrices.requiresNonZeroDimensions(colors);
-        Matrices.requiresRectangularMatrix(colors);
     }
 
     protected void setPixelsColor(T color) {
