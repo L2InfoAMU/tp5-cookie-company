@@ -26,21 +26,13 @@ public class BruteRasterImage implements Image {
         assert width>0;
         assert height>0;
 
-        if(pixels == null)
-            pixels = new Color[height][width];
-        else
-        {
-            pixels = Arrays.copyOf(pixels, height);
-            for (int i = 0; i < height; i++) {
-                if(pixels[i] == null)
-                    pixels[i] = new Color[width];
-                else
-                    pixels[i] = Arrays.copyOf(pixels[i], width);
-            }
-        }
+        pixels = new Color[height][width];
     }
 
     public void setPixelColor(int x, int y, Color color) {
+        if(x >= width || y >= height || x < 0 || y < 0)
+            throw new IndexOutOfBoundsException("pixel not inside picture");
+
         pixels[y][x] = color;
     }
 
@@ -50,12 +42,22 @@ public class BruteRasterImage implements Image {
         Matrices.requiresRectangularMatrix(colors);
 
         pixels = colors;
-        height = pixels.length;
-        width = pixels[0].length;
+        height = pixels[0].length;
+        width = pixels.length;
+        pixels = new Color[height][width];
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                pixels[y][x] = colors[x][y];
+            }
+        }
     }
 
     @Override
     public Color getPixelColor(int x, int y) {
+        if(x >= width || y >= height || x < 0 || y < 0)
+            throw new IndexOutOfBoundsException("pixel not inside picture");
+
         return pixels[y][x];
     }
 
@@ -71,9 +73,18 @@ public class BruteRasterImage implements Image {
 
     protected void setWidth(int width) {
         this.width = width;
+
+        for (int y = 0; y < height; y++) {
+            if(pixels[y] == null)
+                pixels[y] = new Color[width];
+            else
+                pixels[y] = Arrays.copyOf(pixels[y], width);
+        }
     }
 
     protected void setHeight(int height) {
         this.height = height;
+
+        pixels = Arrays.copyOf(pixels, height);
     }
 }
