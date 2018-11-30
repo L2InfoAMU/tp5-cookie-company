@@ -9,6 +9,8 @@ public class VectorImage implements Image {
     private int width;
     private int height;
 
+    public final static Color backgroundColor = Color.WHITE;
+
     public VectorImage(List<Shape> shapes, int width, int height) {
         this.shapes = shapes;
         this.width = width;
@@ -19,7 +21,7 @@ public class VectorImage implements Image {
         for(Shape shape : shapes)
             if(shape.contains(point))
                 return shape.getColor();
-        return Color.BLACK;
+        return backgroundColor;
     }
     @Override
     public Color getPixelColor(int x, int y) {
