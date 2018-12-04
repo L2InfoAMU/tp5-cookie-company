@@ -11,8 +11,10 @@ public class PaletteRasterImage extends RasterImage<Byte> {
 
     public PaletteRasterImage(Color color, int width, int height) {
 
-        createRepresentation();
+        setWidth(width);
+        setHeight(height);
 
+        createRepresentation();
         setPixelsColor(color);
     }
 
