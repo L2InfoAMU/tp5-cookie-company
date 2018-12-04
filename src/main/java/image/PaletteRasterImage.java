@@ -13,10 +13,7 @@ public class PaletteRasterImage extends RasterImage<Byte> {
 
         createRepresentation();
 
-        byteToColor.put((byte)0, color);
-        colorToByte.put(color, (byte)0);
-
-        setPixelsColor((byte)0);
+        setPixelsColor(color);
     }
 
     public PaletteRasterImage(Color[][] colors) {
@@ -32,24 +29,21 @@ public class PaletteRasterImage extends RasterImage<Byte> {
     }
 
     @Override
-    public void setPixelColor(Color color, int x, int y){
-        if(colorToByte.containsKey(color)){
-            setRawPixelColor(colorToByte.get(color), x, y);
-        }
-        else {
-            setRawPixelColor(addNewColor(color), x, y);
-        }
+    protected Byte toRawPixel(Color color) {
+        if(colorToByte.containsKey(color))
+            return colorToByte.get(color);
+        return addNewColor(color);
     }
 
-    protected byte addNewColor(Color color) {
+    @Override
+    protected Color fromRawPixel(Byte raw) {
+        return byteToColor.get(raw);
+    }
+
+    private byte addNewColor(Color color) {
         byte value = (byte)colorToByte.size();
         colorToByte.put(color, value);
         byteToColor.put(value, color);
         return value;
-    }
-
-    @Override
-    public Color getPixelColor(int x, int y) {
-        return byteToColor.get(getRawPixelColor(x, y));
     }
 }

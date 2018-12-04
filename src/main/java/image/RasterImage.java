@@ -6,7 +6,7 @@ import util.Matrices;
 import java.util.Arrays;
 
 public abstract class RasterImage<T> extends AbstractDimensionImage {
-    protected T[][] pixelColors;
+    private T[][] pixelColors;
 
 
     public void createRepresentation(){
@@ -16,26 +16,33 @@ public abstract class RasterImage<T> extends AbstractDimensionImage {
         pixelColors = (T[][]) new Object[height][width];
     }
 
+    @Override
+    public Color getPixelColor(int x, int y) {
+        return fromRawPixel(getRawPixelColor(x, y));
+    }
+
     protected void checkPictureBound(Color[][] colors) {
         Matrices.requiresNonNull(colors);
         Matrices.requiresNonZeroDimensions(colors);
         Matrices.requiresRectangularMatrix(colors);
     }
 
-    protected void setRawPixelColors(T[][] pixelColors) {
+    private void setRawPixelColors(T[][] pixelColors) {
         this.pixelColors = pixelColors;
     }
 
-    protected void setRawPixelColor(T color, int x, int y) {
+    private void setRawPixelColor(T color, int x, int y) {
         checkPixelBound(x, y);
         pixelColors[y][x] = color;
     }
 
-    protected T getRawPixelColor(int x, int y) {
+    private T getRawPixelColor(int x, int y) {
         return pixelColors[y][x];
     }
 
-    public abstract void setPixelColor(Color color, int x, int y);
+    public void setPixelColor(Color color, int x, int y) {
+        setRawPixelColor(toRawPixel(color), x, y);
+    }
 
     public void setPixelsColor(Color[][] colors) {
         checkPictureBound(colors);
@@ -52,19 +59,15 @@ public abstract class RasterImage<T> extends AbstractDimensionImage {
         }
     }
 
-    protected void applyResize() {
-        pixelColors = Arrays.copyOf(pixelColors, height);
-
-        for (int i = 0; i < height; i++) {
-            if(pixelColors[i] == null)
-                pixelColors[i] = (T[]) new Object[this.width];
-            else
-                pixelColors[i] = Arrays.copyOf(pixelColors[i], this.width);
-        }
+    public void setPixelsColor(Color color) {
+        setRawPixelsColor(toRawPixel(color));
     }
 
-    protected void setPixelsColor(T color) {
+    private void setRawPixelsColor(T color) {
         for(T[] lines : pixelColors)
             Arrays.fill(lines, color);
     }
+
+    protected abstract T toRawPixel(Color color);
+    protected abstract Color fromRawPixel(T raw);
 }

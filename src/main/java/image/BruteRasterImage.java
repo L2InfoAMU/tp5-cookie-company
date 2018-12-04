@@ -17,12 +17,12 @@ public class BruteRasterImage extends RasterImage<Color> {
     }
 
     @Override
-    public void setPixelColor(Color color, int x, int y) {
-        setRawPixelColor(color, x, y);
+    protected Color toRawPixel(Color color) {
+        return color;
     }
 
     @Override
-    public Color getPixelColor(int x, int y) {
-        return getRawPixelColor(x, y);
+    protected Color fromRawPixel(Color raw) {
+        return raw;
     }
 }
