@@ -27,19 +27,6 @@ public abstract class RasterImage<T> extends AbstractDimensionImage {
         Matrices.requiresRectangularMatrix(colors);
     }
 
-    private void setRawPixelColors(T[][] pixelColors) {
-        this.pixelColors = pixelColors;
-    }
-
-    private void setRawPixelColor(T color, int x, int y) {
-        checkPixelBound(x, y);
-        pixelColors[y][x] = color;
-    }
-
-    private T getRawPixelColor(int x, int y) {
-        return pixelColors[y][x];
-    }
-
     public void setPixelColor(Color color, int x, int y) {
         setRawPixelColor(toRawPixel(color), x, y);
     }
@@ -66,6 +53,19 @@ public abstract class RasterImage<T> extends AbstractDimensionImage {
     private void setRawPixelsColor(T color) {
         for(T[] lines : pixelColors)
             Arrays.fill(lines, color);
+    }
+
+    private void setRawPixelColors(T[][] pixelColors) {
+        this.pixelColors = pixelColors;
+    }
+
+    private void setRawPixelColor(T color, int x, int y) {
+        checkPixelBound(x, y);
+        pixelColors[y][x] = color;
+    }
+
+    private T getRawPixelColor(int x, int y) {
+        return pixelColors[y][x];
     }
 
     protected abstract T toRawPixel(Color color);
